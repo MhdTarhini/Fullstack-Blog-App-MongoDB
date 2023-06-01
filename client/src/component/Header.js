@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 function Header(){
 
-  const [username,setUsername]=useState(null);
-
+  // const [username,setUsername]=useState(null); // we Used context instead 
+  const {setUserInfo, userInfo}=useContext(UserContext)
   useEffect(()=>{
     fetch('http://localhost:4000/profile',{
       credentials:'include',
     }).then(response=>response.json()).then(userInfo=>
-      setUsername(userInfo.username))
+      // setUsername(userInfo.username)
+      setUserInfo(userInfo))
   },[])
 
   function logout(){
@@ -17,8 +19,9 @@ function Header(){
       credentials: 'include',
       method:"POST"
     })
-    setUsername(null)
+    setUserInfo(null)
   }
+  const username = userInfo?.username;
     return(
         <header>
             <Link to='/' className='logo'>logo</Link>

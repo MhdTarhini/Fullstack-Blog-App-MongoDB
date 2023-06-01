@@ -4,9 +4,11 @@ import Layout from './component/layout';
 import HomePage from './component/HomePage';
 import LoginPage from './component/LoginPage';
 import RegisterPage from './component/RegisterPage';
+import { UserContextProvider } from './context/UserContext';
 
 function App() {
   return (
+    <UserContextProvider>
       <Routes>
         <Route path='/' element={<Layout/>}>
           <Route index element={<HomePage/>}/>
@@ -14,6 +16,7 @@ function App() {
           <Route path='/register' element={<RegisterPage/>}/>
         </Route>
       </Routes>
+    </UserContextProvider>
 
   );
 }
