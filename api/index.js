@@ -10,3 +10,4 @@ app.post('/register',(req,res)=>{
     res.json({requestData:{username,password}});
 });
 app.listen(4000)
+//mongodb+srv://mohamedtarhini95:mohamed123@cluster1.boziiha.mongodb.net/?retryWrites=true&w=majority
