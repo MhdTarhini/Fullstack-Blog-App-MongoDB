@@ -20,7 +20,7 @@ app.use(cors({credentials:true,origin:'http://localhost:3000'}));
 //{credentials:true,origin:'http://localhost:3000'} are assigned for the cookies
 app.use(express.json());
 app.use(cookieParser())
-
+app.use('/uploads', express.static(__dirname+'/uploads'));
 mongoose.connect('mongodb+srv://mohamedtarhini95:mohamed123@cluster1.boziiha.mongodb.net/?retryWrites=true&w=majority')
 
 app.post('/register', async(req,res)=>{
@@ -75,14 +75,37 @@ app.post('/post',uploadMiddleware.single('file'),async (req,res)=>{
     const ext = parts[parts.length-1];
     const newPath = path+'.'+ext
     fs.renameSync(path,newPath);
-    const{title , summary , content}= req.body;
-    const PostDoc = await Post.create({
-        title,
-        summary, 
-        content, 
-        cover:newPath
-    })
-    res.json(PostDoc);
+    const {token}=req.cookies;
+    jwt.verify(token,secret,{},async (err,info)=>{
+        if(err) throw err;
+        const{title , summary , content}= req.body;
+        const PostDoc = await Post.create({
+            title,
+            summary, 
+            content, 
+            cover:newPath,
+            author:info.id,
+        })
+        res.json(PostDoc);
+    });
 })
+
+app.get('/post',async (req,res)=>{
+    res.json(await Post.find()
+    .populate('author',['username'])//.populate('author',['username'] to get the username from the user info by the id (author:info.id)
+    .sort({createdAt:-1})
+    .limit(20));
+});
+
+app.get('/post/:id',async (req,res)=>{
+    const {id}=req.params;
+    const postDoc = await Post.findById(id).populate('author',['username']);
+    res.json(postDoc);
+})
+
+
+
+
+
 
 app.listen(4000)
