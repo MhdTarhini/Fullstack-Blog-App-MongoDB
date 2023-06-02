@@ -21,20 +21,35 @@ export default function CreatePostPage (){
     const [title,setTitle]=useState('')
     const [summary,setSummary]=useState('')
     const [content,setContent]=useState('')
+    const [files,setfiles]=useState('')
+
+    function CreateNewPost(e){
+        const data = new FormData();
+        data.set('title', title);
+        data.set('summary', summary);
+        data.set('content', content);
+        data.set('file', files[0]);
+        e.preventDefault();
+        fetch('http://localhost:4000/post',{
+            method:'POST',
+            body: data,
+        })
+    }
 
     return(
-        <form>
+        <form onSubmit={CreateNewPost}>
             <input type="title" placeholder="Title" 
-            value={title} 
-            onChange={(e)=>{setTitle(e.target.value)}}/>
+                value={title} 
+                onChange={(e)=>{setTitle(e.target.value)}}/>
             <input type="summary" placeholder="Summary" 
-            value={summary}
-            onChange={(e)=>{setSummary(e.target.value)}}/>
-            <input type="file"/>
+                value={summary}
+                onChange={(e)=>{setSummary(e.target.value)}}/>
+            <input type="file"
+                onChange={(e)=>setfiles(e.target.files)}/>
             <ReactQuill 
-            value={content} 
-            onChange={setContent}
-            modules={modules} formats={formats}/>
+                value={content} 
+                onChange={setContent}
+                modules={modules} formats={formats}/>
             <button style={{marginTop:'5px'}}>Create Post</button>
         </form>
     )
