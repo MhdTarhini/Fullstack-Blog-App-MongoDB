@@ -33,8 +33,8 @@ app.post('/register', async(req,res)=>{
 
 app.post('/login', async(req,res)=>{
     const{username,password}=req.body;
-        const userDoc=await UserModel.findOne({username});
-        console.log(userDoc)
+        const userDoc=await UserModel.findOne({username}).exec();
+        // console.log(userDoc);
         const passOK = bcrypt.compareSync(password, userDoc.password);
         if (passOK){
             //logged in
@@ -46,8 +46,7 @@ app.post('/login', async(req,res)=>{
                 })
             })
         }else{
-
-        res.status(400).json("failed login");    
+            res.status(400).json("failed login");    
         }
 });
 
