@@ -6,14 +6,22 @@ function Header(){
 
   // const [username,setUsername]=useState(null); // we Used context instead 
   const {setUserInfo, userInfo}=useContext(UserContext)
-  useEffect(()=>{
-    fetch('http://localhost:4000/profile',{
-      credentials:'include',
-    }).then(response=>response.json()).then(userInfo=>
-      // setUsername(userInfo.username)
-      setUserInfo(userInfo))
-  },[])
-
+  useEffect( ()=>{
+    async function fetchData(){
+      try {
+        await fetch('http://localhost:4000/profile',{
+          credentials:'include',
+        }).then(response=>response.json()).then(userInfo=>
+          // setUsername(userInfo.username)
+          setUserInfo(userInfo))
+        
+      } catch (error) {
+        console.log("not ign on")
+      }
+    }
+    fetchData()
+  },[setUserInfo]);
+      
   function logout(){
     fetch('http://localhost:4000/logout',{
       credentials: 'include',
