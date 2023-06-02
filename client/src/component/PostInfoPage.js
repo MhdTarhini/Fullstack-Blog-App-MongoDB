@@ -1,10 +1,12 @@
 import { format, formatISO9075 } from "date-fns";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { UserContext } from "../context/UserContext";
 
 export default function PostInfoPage(){
     const {id} = useParams();
     const [postInfo,setPostInfo]=useState(null);
+    const {userInfo}=useContext(UserContext);
     useEffect(()=>{
         fetch(`http://localhost:4000/post/${id}`)
         .then(response=>{
@@ -25,7 +27,7 @@ export default function PostInfoPage(){
             <div className="post-image">
                 <img src={`http://localhost:4000/${postInfo.cover}`}/>
             </div>
-            <div dangerouslySetInnerHTML={{__html:postInfo.content}}/>
+            <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}}/>
         </div>
     )
 

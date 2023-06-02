@@ -16,7 +16,7 @@ export default function HomePage(){
     return(
         <>
         {posts.length>0 && posts.map(post=>{
-            return <Post {...post}/>
+            return <Post {...post} key={post._id}/>
         })}
         </>
     );
