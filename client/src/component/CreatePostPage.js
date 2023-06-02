@@ -23,14 +23,14 @@ export default function CreatePostPage (){
     const [content,setContent]=useState('')
     const [files,setfiles]=useState('')
 
-    function CreateNewPost(e){
+    async function CreateNewPost(e){
         const data = new FormData();
         data.set('title', title);
         data.set('summary', summary);
         data.set('content', content);
         data.set('file', files[0]);
         e.preventDefault();
-        fetch('http://localhost:4000/post',{
+        const response = await fetch('http://localhost:4000/post',{
             method:'POST',
             body: data,
         })
@@ -44,7 +44,7 @@ export default function CreatePostPage (){
             <input type="summary" placeholder="Summary" 
                 value={summary}
                 onChange={(e)=>{setSummary(e.target.value)}}/>
-            <input type="file"
+            <input type="file" name="file"
                 onChange={(e)=>setfiles(e.target.files)}/>
             <ReactQuill 
                 value={content} 
