@@ -1,7 +1,8 @@
-import { useState } from "react"
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { Navigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill"
 import 'react-quill/dist/quill.snow.css'
+
 
     const modules = {
     toolbar: [
@@ -19,35 +20,51 @@ import 'react-quill/dist/quill.snow.css'
     'link', 'image'
     ]
 
-export default function CreatePostPage (){
+
+
+export default function EditPost (){
+    const {id}=useParams();
     const [title,setTitle]=useState('')
     const [summary,setSummary]=useState('')
     const [content,setContent]=useState('')
     const [files,setfiles]=useState('')
     const [redirect,setRedirect]=useState(false);
+    useEffect(()=>{
+        fetch(`http://localhost:4000/post/${id}`)
+        .then(response=>{
+            response.json().then().then(data=>{
+                setTitle(data.title);
+                setContent(data.content);
+                setSummary(data.summary);
+            })
+        })
+    },[id])
 
-    async function CreateNewPost(e){
+    async function UpdatePost(e){
+        e.preventDefault();
         const data = new FormData();
         data.set('title', title);
         data.set('summary', summary);
         data.set('content', content);
-        data.set('file', files[0]);
-        e.preventDefault();
+        data.set('id', id);
+        if(files?.[0]){
+            data.set('file', files?.[0]);
+        }
         const response = await fetch('http://localhost:4000/post',{
-            method:'POST',
-            body: data,
+            method:'PUT',
+            body:data,
             credentials:'include',
-        })
+        },[])
         if (response.ok){
             setRedirect(true);
-        }
+        } 
     }
     if(redirect){
-        return <Navigate to="/"/>
+        return <Navigate to={`/post/${id}`}/>
     }
 
     return(
-        <form onSubmit={CreateNewPost}>
+        <form onSubmit={UpdatePost}>
             <input type="title" placeholder="Title" 
                 value={title} 
                 onChange={(e)=>{setTitle(e.target.value)}}/>
@@ -60,7 +77,7 @@ export default function CreatePostPage (){
             onChange={(newValue) =>{setContent(newValue)}}
             modules={modules}
             formats={formats}/>
-            <button style={{marginTop:'5px'}}>Create Post</button>
+            <button type='submit' style={{marginTop:'5px'}}>Update Post</button>
         </form>
     )
 }

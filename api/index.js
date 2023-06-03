@@ -97,6 +97,36 @@ app.get('/post',async (req,res)=>{
     .limit(20));
 });
 
+app.put('/post',uploadMiddleware.single('file'),async (req,res)=>{
+    let newPath=null;
+    if(req.file){
+        const {originalname,path}= req.file ;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length-1];
+        newPath = path+'.'+ext
+        fs.renameSync(path,newPath);
+    }
+    const {token}=req.cookies;
+    jwt.verify(token,secret,{},async (err,info)=>{
+        if(err) throw err;
+        const{id ,title , summary , content}= req.body;
+        const PostDoc = await Post.findById(id);
+        const isAuthor = JSON.stringify(PostDoc.author) === JSON.stringify(info.id);
+        if(!isAuthor){
+            return res.json(400).json("invalid author");
+        }
+        await PostDoc.updateOne({
+            title,
+            summary,
+            content,
+            cover:newPath?newPath :PostDoc.cover,
+        })
+        res.json(PostDoc);
+    });
+})
+
+
+
 app.get('/post/:id',async (req,res)=>{
     const {id}=req.params;
     const postDoc = await Post.findById(id).populate('author',['username']);
