@@ -36,8 +36,9 @@ function Header(){
             <nav>
               {username && (
                 <>
-                  <Link to='/create'>Create New Post</Link>
-                  <a onClick={logout} href='/' >Logout</a>
+                <span style={{fontWeight: 'bold'}}>HELLO {username.toUpperCase()}</span>
+                <Link to='/create'>Create New Post</Link>
+                <a onClick={logout} href='/' >Logout</a>
                 </>
               )}
               {!username && (
