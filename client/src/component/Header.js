@@ -62,9 +62,9 @@ function Header() {
                   </span>
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <a className="dropdown-item" href="">
+                  <Link className="dropdown-item" to="/profile">
                     Profile
-                  </a>
+                  </Link>
                   <Link to="/create" className="dropdown-item">
                     Create New Post
                   </Link>

@@ -8,22 +8,23 @@ import { UserContextProvider } from './context/UserContext';
 import CreatePostPage from './component/CreatePostPage';
 import PostInfoPage from './component/PostInfoPage';
 import EditPost from './component/EditPost';
+import UserProfile from "./component/UserProfile";
 
 function App() {
   return (
     <UserContextProvider>
       <Routes>
-        <Route path='/' element={<Layout/>}>
-          <Route index element={<HomePage/>}/>
-          <Route path='/login' element={<LoginPage/>}/>
-          <Route path='/register' element={<RegisterPage/>}/>
-          <Route path='/create' element={<CreatePostPage/>}/>
-          <Route path='/post/:id' element={<PostInfoPage/>}/>
-          <Route path='/edit/:id' element={<EditPost/>}/>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/create" element={<CreatePostPage />} />
+          <Route path="/post/:id" element={<PostInfoPage />} />
+          <Route path="/edit/:id" element={<EditPost />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Route>
       </Routes>
     </UserContextProvider>
-
   );
 }
 
