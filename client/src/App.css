@@ -94,6 +94,7 @@ input {
 }
 
 button {
+  margin-top: 10px;
   cursor: pointer;
   width: 100%;
   display: block;

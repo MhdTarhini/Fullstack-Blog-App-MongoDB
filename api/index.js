@@ -23,36 +23,57 @@ app.use(cookieParser())
 app.use('/uploads', express.static(__dirname+'/uploads'));
 mongoose.connect('mongodb+srv://mohamedtarhini95:mohamed123@cluster1.boziiha.mongodb.net/?retryWrites=true&w=majority')
 
-app.post('/register', async(req,res)=>{
-    const{username,password}=req.body;
+app.post(
+  "/register",
+  uploadMiddleware.single("ProfileImage"),
+  async (req, res) => {
+    console.log(req.file);
+    const { originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    console.log(req.body);
+    const { username, password, ProfileImage, EmailAddress, DateofBirth } =
+      req.body;
     try {
-        const userDoc = await UserModel.create({
-            username,
-            password:bcrypt.hashSync(password,salt)
-        });
-        res.json(userDoc);
+      const userDoc = await UserModel.create({
+        username,
+        password: bcrypt.hashSync(password, salt),
+        ProfileImage: newPath,
+        EmailAddress,
+        DateofBirth,
+      });
+      res.json(userDoc);
     } catch (error) {
-        res.status(400).json(error);
+      res.status(400).json(error);
     }
-});
+  }
+);
 
-app.post('/login', async(req,res)=>{
-    const{username,password}=req.body;
-        const userDoc=await UserModel.findOne({username}).exec();
-        // console.log(userDoc);
-        const passOK = bcrypt.compareSync(password, userDoc.password);
-        if (passOK){
-            //logged in
-            jwt.sign({username, id:userDoc._id},secret,{},(err,token)=>{
-                if(err)throw err;
-                res.cookie('token',token).json({
-                    id:userDoc._id,
-                    username,
-                })
-            })
-        }else{
-            res.status(400).json("failed login");    
-        }
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const userDoc = await UserModel.findOne({ username }).exec();
+  console.log(userDoc);
+  const passOK = bcrypt.compareSync(password, userDoc.password);
+  if (passOK) {
+    //logged in
+    jwt.sign(
+      { username, id: userDoc._id, ProfileImage: userDoc.ProfileImage },
+      secret,
+      {},
+      (err, token) => {
+        if (err) throw err;
+        res.cookie("token", token).json({
+          id: userDoc._id,
+          username,
+          ProfileImage: userDoc.ProfileImage,
+        });
+      }
+    );
+  } else {
+    res.status(400).json("failed login");
+  }
 });
 
 app.get('/profile',(req,res)=>{

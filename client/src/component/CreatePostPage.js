@@ -33,6 +33,7 @@ export default function CreatePostPage (){
         data.set('content', content);
         data.set('file', files[0]);
         e.preventDefault();
+        console.log(data);
         const response = await fetch('http://localhost:4000/post',{
             method:'POST',
             body: data,
