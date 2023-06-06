@@ -26,42 +26,66 @@ export default function CreatePostPage (){
     const [files,setfiles]=useState('')
     const [redirect,setRedirect]=useState(false);
 
-    async function CreateNewPost(e){
-        const data = new FormData();
-        data.set('title', title);
-        data.set('summary', summary);
-        data.set('content', content);
-        data.set('file', files[0]);
-        e.preventDefault();
-        console.log(data);
-        const response = await fetch('http://localhost:4000/post',{
-            method:'POST',
-            body: data,
-            credentials:'include',
-        })
-        if (response.ok){
-            setRedirect(true);
-        }
+    async function CreateNewPost(e) {
+      const data = new FormData();
+      data.set("title", title);
+      data.set("summary", summary);
+      data.set("content", content);
+      data.set("file", files[0]);
+      e.preventDefault();
+      const response = await fetch("http://localhost:4000/post", {
+        method: "POST",
+        body: data,
+        credentials: "include",
+      });
+      if (response.ok) {
+        setRedirect(true);
+      }
     }
-    if(redirect){
-        return <Navigate to="/"/>
+    if (redirect) {
+      return <Navigate to="/" />;
     }
 
-    return(
+    return (
+      <div>
+        <blockquote className="blockquote text-center">
+          <p className="mb-0">NEW POST</p>
+          <footer className="blockquote-footer">
+            Always Write What You Thing About
+          </footer>
+        </blockquote>
         <form onSubmit={CreateNewPost}>
-            <input type="title" placeholder="Title" 
-                value={title} 
-                onChange={(e)=>{setTitle(e.target.value)}}/>
-            <input type="summary" placeholder="Summary" 
-                value={summary}
-                onChange={(e)=>{setSummary(e.target.value)}}/>
-            <input type="file" name="file"
-                onChange={(e)=>setfiles(e.target.files)}/>
-            <ReactQuill value={content} 
-            onChange={(newValue) =>{setContent(newValue)}}
+          <input
+            type="title"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
+          <input
+            type="summary"
+            placeholder="Summary"
+            value={summary}
+            onChange={(e) => {
+              setSummary(e.target.value);
+            }}
+          />
+          <input
+            type="file"
+            name="file"
+            onChange={(e) => setfiles(e.target.files)}
+          />
+          <ReactQuill
+            value={content}
+            onChange={(newValue) => {
+              setContent(newValue);
+            }}
             modules={modules}
-            formats={formats}/>
-            <button style={{marginTop:'5px'}}>Create Post</button>
+            formats={formats}
+          />
+          <button style={{ marginTop: "5px" }}>Create Post</button>
         </form>
-    )
+      </div>
+    );
 }

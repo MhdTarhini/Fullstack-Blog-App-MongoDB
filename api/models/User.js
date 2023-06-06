@@ -24,6 +24,7 @@ const UserSchema = new Schema({
   },
   DateofBirth: {
     type: String,
+    required: true,
   },
 });
 

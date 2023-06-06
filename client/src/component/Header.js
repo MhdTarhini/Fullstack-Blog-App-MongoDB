@@ -52,7 +52,11 @@ function Header() {
                   aria-expanded="false">
                   <span style={{ fontWeight: "bold" }}>
                     <img
-                      src={`http://localhost:4000/${ProfileImage}`}
+                      src={
+                        ProfileImage
+                          ? `http://localhost:4000/${ProfileImage}`
+                          : `http://localhost:4000/uploads/272e932b686d420022deb7ec56ea1e9f.jpg`
+                      }
                       className="rounded-circle"
                       style={{ width: "50px" }}
                       alt="Avatar"
@@ -61,10 +65,12 @@ function Header() {
                   </span>
                 </a>
                 <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <Link className="dropdown-item" to="/profile">
+                  <Link
+                    className="dropdown-item"
+                    to={`/profile/${userInfo.id}`}>
                     Profile
                   </Link>
-                  <Link to="/edit/:userId" className="dropdown-item">
+                  <Link to="/Setting/:userId" className="dropdown-item">
                     Edite Profile
                   </Link>
                   <div className="dropdown-divider"></div>

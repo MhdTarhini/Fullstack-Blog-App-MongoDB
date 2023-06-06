@@ -17,7 +17,6 @@ export default function RegisterPage() {
     UserData.set("ProfileImage", ProfileImage[0]);
     UserData.set("DateofBirth", DateofBirth);
     e.preventDefault();
-    console.log(UserData);
     const response = await fetch("http://localhost:4000/register", {
       method: "POST",
       body: UserData,
