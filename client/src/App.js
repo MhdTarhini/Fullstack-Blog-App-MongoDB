@@ -9,6 +9,7 @@ import CreatePostPage from './component/CreatePostPage';
 import PostInfoPage from './component/PostInfoPage';
 import EditPost from './component/EditPost';
 import UserProfile from "./component/UserProfile";
+import EditeProfile from "./component/EditeProfile";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/post/:id" element={<PostInfoPage />} />
           <Route path="/edit/:id" element={<EditPost />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/edit/:userId" element={<EditeProfile />} />
         </Route>
       </Routes>
     </UserContextProvider>

@@ -29,16 +29,18 @@ export default function EditPost (){
     const [content,setContent]=useState('')
     const [files,setfiles]=useState('')
     const [redirect,setRedirect]=useState(false);
-    useEffect(()=>{
-        fetch(`http://localhost:4000/post/${id}`)
-        .then(response=>{
-            response.json().then().then(data=>{
-                setTitle(data.title);
-                setContent(data.content);
-                setSummary(data.summary);
-            })
-        })
-    },[id])
+    useEffect(() => {
+      fetch(`http://localhost:4000/post/${id}`).then((response) => {
+        response
+          .json()
+          .then()
+          .then((data) => {
+            setTitle(data.title);
+            setContent(data.content);
+            setSummary(data.summary);
+          });
+      });
+    }, [id]);
 
     async function UpdatePost(e){
         e.preventDefault();

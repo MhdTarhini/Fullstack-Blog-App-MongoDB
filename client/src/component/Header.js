@@ -6,7 +6,6 @@ function Header() {
   // const [username,setUsername]=useState(null); // we Used context instead
   const { userInfo, setUserInfo } = useContext(UserContext);
   useEffect(() => {
-    console.log(userInfo);
     async function fetchData() {
       try {
         await fetch("http://localhost:4000/profile", {
@@ -45,7 +44,7 @@ function Header() {
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
-                  href=""
+                  href="/#"
                   id="navbarDropdown"
                   role="button"
                   data-toggle="dropdown"
@@ -65,8 +64,8 @@ function Header() {
                   <Link className="dropdown-item" to="/profile">
                     Profile
                   </Link>
-                  <Link to="/create" className="dropdown-item">
-                    Create New Post
+                  <Link to="/edit/:userId" className="dropdown-item">
+                    Edite Profile
                   </Link>
                   <div className="dropdown-divider"></div>
                   <a className="dropdown-item" onClick={logout} href="/">
@@ -89,8 +88,3 @@ function Header() {
 }
 
 export default Header;
-{
-  /* <span style={{fontWeight: 'bold'}}>HELLO {username.toUpperCase()}</span>
-<Link to='/create'>Create New Post</Link>
-<a onClick={logout} href='/' >Logout</a> */
-}
