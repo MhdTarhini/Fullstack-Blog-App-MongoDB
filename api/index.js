@@ -33,17 +33,16 @@ app.post(
   "/register",
   uploadMiddleware.single("ProfileImage"),
   async (req, res) => {
+    let newPath = "";
     if (req.file) {
       const { originalname, path } = req.file;
       const parts = originalname.split(".");
       const ext = parts[parts.length - 1];
-      const newPath = path + "." + ext;
+      newPath = path + "." + ext;
       fs.renameSync(path, newPath);
-    } else {
-      newPath = "";
     }
-    const { username, password, ProfileImage, EmailAddress, DateofBirth } =
-      req.body;
+    const { username, password, EmailAddress, DateofBirth } = req.body;
+    console.log(req.body);
     try {
       const userDoc = await UserModel.create({
         username,
@@ -54,6 +53,7 @@ app.post(
       });
       res.json(userDoc);
     } catch (error) {
+      console.log(error);
       res.status(400).json(error);
     }
   }

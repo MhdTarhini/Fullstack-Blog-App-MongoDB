@@ -19,7 +19,7 @@ function ProfileTemplate() {
                   ? `http://localhost:4000/${userInfo.ProfileImage}`
                   : `http://localhost:4000/uploads/272e932b686d420022deb7ec56ea1e9f.jpg`
               }
-              alt="Generic placeholder image"
+              alt="Generic placeholder"
               className="img-fluid img-thumbnail mt-4 mb-2"
               style={{ width: "180px", Zindex: 1, height: "300px" }}
             />

@@ -21,7 +21,7 @@ function Header() {
       }
     }
     fetchData();
-  }, []);
+  }, [setUserInfo]);
 
   function logout() {
     fetch("http://localhost:4000/logout", {

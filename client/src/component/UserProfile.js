@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
 import Post from "./Post";
 import CreatePostPage from "./CreatePostPage";
 import ProfileTemplate from "./ProfileTemplate";
@@ -18,22 +17,29 @@ function UserProfile() {
       });
     }
     fetchData();
-  }, []);
+  }, [userId]);
   async function DeletePost(postID) {
-    await fetch(`http://localhost:4000/post/${postID}`, {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.acknowledged) {
-          alert("Delete successful");
-          window.location.reload(false);
-        } else {
-          alert("Delete failed");
-        }
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+
+    if (confirmed) {
+      await fetch(`http://localhost:4000/post/${postID}`, {
+        method: "DELETE",
       })
-      .catch((err) => console.log(err));
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.acknowledged) {
+            alert("Delete successful");
+            window.location.reload(false);
+          } else {
+            alert("Delete failed");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
   }
+
   return (
     <div style={{ backgroundColor: "#f8f9fa" }}>
       <ProfileTemplate />
